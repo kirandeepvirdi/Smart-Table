@@ -3,6 +3,7 @@
     angular.module('smartTable.templateUrlList', [])
         .constant('templateUrlList', {
             smartTable: 'partials/smartTable.html',
+            smartTableFixedColumn: 'partials/smartTableFixedColumn.html',
             smartTableGlobalSearch: 'partials/globalSearchCell.html',
             editableCell: 'partials/editableCell.html',
             selectionCheckbox: 'partials/selectionCheckbox.html',

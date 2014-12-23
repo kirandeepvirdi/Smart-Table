@@ -17,6 +17,13 @@
                 }
                 return returnFunction(value, filterParameter);
             };
+        }]).
+        filter('greaterThan', [function () {
+            return function (arr, num) {
+            	return arr.filter(function(item, index){
+                    return index >= num;
+                });
+            };
         }]);
 })(angular);
 

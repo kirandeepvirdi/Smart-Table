@@ -1,4 +1,4 @@
-angular.module('smartTable.templates', ['partials/defaultCell.html', 'partials/defaultHeader.html', 'partials/editableCell.html', 'partials/globalSearchCell.html', 'partials/pagination.html', 'partials/selectAllCheckbox.html', 'partials/selectionCheckbox.html', 'partials/smartTable.html']);
+angular.module('smartTable.templates', ['partials/defaultCell.html', 'partials/defaultHeader.html', 'partials/editableCell.html', 'partials/globalSearchCell.html', 'partials/pagination.html', 'partials/selectAllCheckbox.html', 'partials/selectionCheckbox.html', 'partials/smartTable.html', 'partials/smartTableFixedColumn.html']);
 
 angular.module("partials/defaultCell.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("partials/defaultCell.html",
@@ -75,4 +75,79 @@ angular.module("partials/smartTable.html", []).run(["$templateCache", function($
     "\n" +
     "\n" +
     "");
+}]);
+
+angular.module("partials/smartTableFixedColumn.html", []).run(["$templateCache", function($templateCache) {
+  $templateCache.put("partials/smartTableFixedColumn.html",
+    "<div class=\"wrapper\">\n" +
+    "	<div class=\"top-left\">\n" +
+    "		<table id=\"left_Header\" class=\"smart-table\">\n" +
+    "			<thead>\n" +
+    "		        <tr class=\"smart-table-header-row\">\n" +
+    "		            <th ng-repeat=\"column in columns | limitTo : noOfFixedColumn\" ng-include=\"column.headerTemplateUrl\" scope=\"col\" class=\"smart-table-header-cell {{column.headerClass}}\" ng-class=\"{'sort-ascent':column.reverse==true, 'sort-descent':column.reverse==false}\"></th>\n" +
+    "		        </tr>\n" +
+    "		        <tr class=\"smart-table-subheader-row\" ng-repeat=\"subHeaderRow in subHeaders\" id=\"top-left-{{$index}}\">\n" +
+    "		            <th ng-repeat=\"column in columns | limitTo : noOfFixedColumn\" scope=\"column\" class=\"smart-table-subheader-cell {{subHeaderCellClass}}\"></th>\n" +
+    "		        </tr>\n" +
+    "		    </thead>\n" +
+    "		</table>\n" +
+    "	</div>\n" +
+    "	\n" +
+    "	<div class=\"top-right\">\n" +
+    "		<table id=\"right_Header\" class=\"smart-table\">\n" +
+    "			<thead>\n" +
+    "		        <tr class=\"smart-table-header-row\">\n" +
+    "		            <th ng-repeat=\"column in columns | greaterThan : noOfFixedColumn\" ng-include=\"column.headerTemplateUrl\" scope=\"col\" class=\"smart-table-header-cell {{column.headerClass}}\" ng-class=\"{'sort-ascent':column.reverse==true, 'sort-descent':column.reverse==false}\"></th>\n" +
+    "		        </tr>\n" +
+    "		        <tr class=\"smart-table-subheader-row\" ng-repeat=\"subHeaderRow in subHeaders\" id=\"top-right-{{$index}}\">\n" +
+    "		            <th ng-repeat=\"column in columns | greaterThan : noOfFixedColumn\" scope=\"column\" class=\"smart-table-subheader-cell {{subHeaderCellClass}}\"></th>\n" +
+    "		        </tr>\n" +
+    "		    </thead>\n" +
+    "		</table>\n" +
+    "	</div>\n" +
+    "	\n" +
+    "	<div class=\"bottom-left\">\n" +
+    "		<table id=\"left_Body\" class=\"smart-table\">\n" +
+    "			<tbody>\n" +
+    "		        <tr ng-repeat=\"dataRow in displayedCollection\" id=\"bottom-left-{{$index}}\" ng-class=\"{selected:dataRow.isSelected}\" class=\"smart-table-data-row\">\n" +
+    "		            <td ng-repeat=\"column in columns |  limitTo : noOfFixedColumn\" class=\"smart-table-data-cell {{column.cellClass}}\"></td>\n" +
+    "		        </tr>\n" +
+    "		    </tbody>\n" +
+    "		</table>\n" +
+    "	</div>\n" +
+    "	\n" +
+    "	<div class=\"bottom-right\" ng-switch on=\"isPaginationEnabled\">\n" +
+    "		<div ng-switch-when=\"true\">\n" +
+    "			<table id=\"right_Body\" class=\"smart-table\">\n" +
+    "				<tbody>\n" +
+    "			        <tr ng-repeat=\"dataRow in displayedCollection\" id=\"bottom-right-{{$index}}\" ng-class=\"{selected:dataRow.isSelected}\" class=\"smart-table-data-row\">\n" +
+    "			            <td ng-repeat=\"column in columns | greaterThan : noOfFixedColumn\" class=\"smart-table-data-cell {{column.cellClass}}\"></td>\n" +
+    "			        </tr>\n" +
+    "			    </tbody>\n" +
+    "			</table>\n" +
+    "		</div>\n" +
+    "		<div ng-switch-when=\"false\"  infinite-scroll=\"fetch()\" infinite-scroll-distance='2' infinite-scroll-parent=\"true\">\n" +
+    "			<table id=\"right_Body\" class=\"smart-table\">\n" +
+    "				<tbody>\n" +
+    "			        <tr ng-repeat=\"dataRow in displayedCollection\" id=\"bottom-right-{{$index}}\" ng-class=\"{selected:dataRow.isSelected}\" class=\"smart-table-data-row\">\n" +
+    "			            <td ng-repeat=\"column in columns | greaterThan : noOfFixedColumn\" class=\"smart-table-data-cell {{column.cellClass}}\"></td>\n" +
+    "			        </tr>\n" +
+    "			    </tbody>\n" +
+    "			</table>\n" +
+    "		</div>\n" +
+    "	    \n" +
+    "	</div>\n" +
+    "	\n" +
+    "	<div ng-show=\"isPaginationEnabled\" class=\"pagination-wrapper\">\n" +
+    "		<table>\n" +
+    "			<tfoot>\n" +
+    "			    <tr class=\"smart-table-footer-row\">\n" +
+    "			        <td colspan=\"{{columns.length}}\">\n" +
+    "			            <div pagination-smart-table=\"\" num-pages=\"numberOfPages\" max-size=\"maxSize\" current-page=\"currentPage\"></div>\n" +
+    "			        </td>\n" +
+    "			    </tr>\n" +
+    "		    </tfoot>\n" +
+    "		</table>\n" +
+    "	</div>\n" +
+    "</div>");
 }]);

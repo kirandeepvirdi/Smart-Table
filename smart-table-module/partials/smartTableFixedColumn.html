@@ -1,0 +1,71 @@
+<div class="wrapper">
+	<div class="top-left">
+		<table id="left_Header" class="smart-table">
+			<thead>
+		        <tr class="smart-table-header-row">
+		            <th ng-repeat="column in columns | limitTo : noOfFixedColumn" ng-include="column.headerTemplateUrl" scope="col" class="smart-table-header-cell {{column.headerClass}}" ng-class="{'sort-ascent':column.reverse==true, 'sort-descent':column.reverse==false}"></th>
+		        </tr>
+		        <tr class="smart-table-subheader-row" ng-repeat="subHeaderRow in subHeaders" id="top-left-{{$index}}">
+		            <th ng-repeat="column in columns | limitTo : noOfFixedColumn" scope="column" class="smart-table-subheader-cell {{subHeaderCellClass}}"></th>
+		        </tr>
+		    </thead>
+		</table>
+	</div>
+	
+	<div class="top-right">
+		<table id="right_Header" class="smart-table">
+			<thead>
+		        <tr class="smart-table-header-row">
+		            <th ng-repeat="column in columns | greaterThan : noOfFixedColumn" ng-include="column.headerTemplateUrl" scope="col" class="smart-table-header-cell {{column.headerClass}}" ng-class="{'sort-ascent':column.reverse==true, 'sort-descent':column.reverse==false}"></th>
+		        </tr>
+		        <tr class="smart-table-subheader-row" ng-repeat="subHeaderRow in subHeaders" id="top-right-{{$index}}">
+		            <th ng-repeat="column in columns | greaterThan : noOfFixedColumn" scope="column" class="smart-table-subheader-cell {{subHeaderCellClass}}"></th>
+		        </tr>
+		    </thead>
+		</table>
+	</div>
+	
+	<div class="bottom-left">
+		<table id="left_Body" class="smart-table">
+			<tbody>
+		        <tr ng-repeat="dataRow in displayedCollection" id="bottom-left-{{$index}}" ng-class="{selected:dataRow.isSelected}" class="smart-table-data-row">
+		            <td ng-repeat="column in columns |  limitTo : noOfFixedColumn" class="smart-table-data-cell {{column.cellClass}}"></td>
+		        </tr>
+		    </tbody>
+		</table>
+	</div>
+	
+	<div class="bottom-right" ng-switch on="isPaginationEnabled">
+		<div ng-switch-when="true">
+			<table id="right_Body" class="smart-table">
+				<tbody>
+			        <tr ng-repeat="dataRow in displayedCollection" id="bottom-right-{{$index}}" ng-class="{selected:dataRow.isSelected}" class="smart-table-data-row">
+			            <td ng-repeat="column in columns | greaterThan : noOfFixedColumn" class="smart-table-data-cell {{column.cellClass}}"></td>
+			        </tr>
+			    </tbody>
+			</table>
+		</div>
+		<div ng-switch-when="false"  infinite-scroll="fetch()" infinite-scroll-distance='2' infinite-scroll-parent="true">
+			<table id="right_Body" class="smart-table">
+				<tbody>
+			        <tr ng-repeat="dataRow in displayedCollection" id="bottom-right-{{$index}}" ng-class="{selected:dataRow.isSelected}" class="smart-table-data-row">
+			            <td ng-repeat="column in columns | greaterThan : noOfFixedColumn" class="smart-table-data-cell {{column.cellClass}}"></td>
+			        </tr>
+			    </tbody>
+			</table>
+		</div>
+	    
+	</div>
+	
+	<div ng-show="isPaginationEnabled" class="pagination-wrapper">
+		<table>
+			<tfoot>
+			    <tr class="smart-table-footer-row">
+			        <td colspan="{{columns.length}}">
+			            <div pagination-smart-table="" num-pages="numberOfPages" max-size="maxSize" current-page="currentPage"></div>
+			        </td>
+			    </tr>
+		    </tfoot>
+		</table>
+	</div>
+</div>

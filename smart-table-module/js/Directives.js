@@ -2,20 +2,29 @@
 (function (angular) {
     "use strict";
     angular.module('smartTable.directives', ['smartTable.templateUrlList', 'smartTable.templates'])
-        .directive('smartTable', ['templateUrlList', 'DefaultTableConfiguration', function (templateList, defaultConfig) {
+        .directive('smartTable', ['templateUrlList', 'DefaultTableConfiguration','$timeout', function (templateList, defaultConfig,$timeout) {
             return {
                 restrict: 'EA',
                 scope: {
                     columnCollection: '=columns',
                     dataCollection: '=rows',
                     config: '=',
-                    subHeaderCollection: '=subHeaders'
+                    subHeaderCollection: '=subHeaders',
+                    noOfFixedColumn : '=',
+                    fetch : '='
                 },
                 replace: 'true',
-                templateUrl: templateList.smartTable,
+                template: '<div ng-include="contentUrl"></div>',
                 controller: 'TableCtrl',
                 link: function (scope, element, attr, ctrl) {
 
+                	scope.contentUrl = templateList.smartTable;
+                    scope.$watch("noOfFixedColumn",function(newValue){
+                    	if(newValue && parseInt(newValue) >0 ) {
+                            scope.contentUrl = templateList.smartTableFixedColumn;
+                    	}
+                    });
+                	
                     var templateObject;
 
                     scope.$watch('config', function (config) {
@@ -62,10 +71,92 @@
                     //if item are added or removed into the data model from outside the grid
                     scope.$watch('dataCollection', function () {
                         ctrl.sortBy();
+
+						if(scope.noOfFixedColumn && parseInt(scope.noOfFixedColumn) > 0){
+							$timeout(function(){
+								applyFixedColumn();
+							});
+						}
                     }, true);
                     scope.$watch('subHeaderCollection', function (newValue) {
                         ctrl.setSubHeaderDataRow(newValue);
+						if(scope.noOfFixedColumn && parseInt(scope.noOfFixedColumn) > 0){
+							$timeout(function(){
+								applyFixedColumn();
+							});
+						}
                     }, true);
+					
+					
+					function syncTableBodyRows(newValue){
+						for(var i=0; i<=newValue.length ;i++ ){
+							var blhieght = angular.element('#bottom-left-'+i).find('td:eq( 0 )').height(),
+								brhieght = angular.element('#bottom-right-'+i).find('td:eq( 0 )').height();
+							if(blhieght !== brhieght){
+								if (blhieght < brhieght) {
+									angular.element('#bottom-left-'+i).find('td:eq( 0 )').height(brhieght);
+								} else {
+									angular.element('#bottom-right-'+i).find('td:eq( 0 )').height(blhieght);
+								}
+							}
+						}
+					};
+					
+					function syncTableHeaderRows(){
+						for (var i = 0; i < angular.element('.top-left').find('tr').length; i++) {
+							var tlhieght = angular.element('.top-left').find('tr:eq( ' + i + ' )').find('th:eq( 0 )').height(),
+								trhieght = angular.element('.top-right').find('tr:eq( ' + i + ' )').find('th:eq( 0 )').height();
+							if (tlhieght <= trhieght) {
+								angular.element('.top-left').find('tr:eq( ' + i + ' )').find('th:eq( 0 )').height(trhieght);
+							} else {
+								angular.element('.top-right').find('tr:eq( ' + i + ' )').find('th:eq( 0 )').height(tlhieght)
+							}
+						}
+					};
+					
+					function syncTableColumns(){
+						for (var i = 0; i < angular.element('.top-left').find('tr:eq( 0 )').find('th').length; i++) {
+							var bwidth = angular.element('.bottom-left').find('tr:eq( 0 )').find('td:eq(' + i + ')').width(),
+								twidth = angular.element('.top-left').find('tr:eq( 0 )').find('th:eq(' + i + ')').width();
+							if(bwidth !== twidth){
+								if (bwidth < twidth) {
+									angular.element('.bottom-left').find('tr:eq( 0 )').find('td:eq(' + i + ')').width(twidth);
+								} else {
+									angular.element('.top-left').find('tr:eq( 0 )').find('th:eq(' + i + ')').width(bwidth);
+								}
+							}
+						};
+
+						for (var i = 0; i < angular.element('.top-right').find('tr:eq( 0 )').find('th').length; i++) {
+							var bwidth = angular.element('.bottom-right').find('tr:eq( 0 )').find('td:eq(' + i + ')').width(),
+								twidth = angular.element('.top-right').find('tr:eq( 0 )').find('th:eq(' + i + ')').width();
+							if(bwidth !== twidth) {
+								if (bwidth < twidth) {
+									angular.element('.bottom-right').find('tr:eq( 0 )').find('td:eq(' + i + ')').width(twidth);
+								} else {
+									angular.element('.top-right').find('tr:eq( 0 )').find('th:eq(' + i + ')').width(bwidth);
+								}
+							}
+						};
+					};
+					
+					function applyFixedColumn(){
+						syncTableHeaderRows();
+						syncTableBodyRows(scope.dataCollection);
+						syncTableColumns();
+						
+						angular.element('.bottom-right').scroll(function() {
+							angular.element('.top-right').scrollLeft(angular.element('.bottom-right').scrollLeft());
+							angular.element('.bottom-left').scrollTop(angular.element('.bottom-right').scrollTop());
+						});
+					};
+					
+					$timeout(function(){
+						if(scope.noOfFixedColumn && parseInt(scope.noOfFixedColumn) > 0){
+							applyFixedColumn();
+						}
+					});
+					
                 }
             };
         }])

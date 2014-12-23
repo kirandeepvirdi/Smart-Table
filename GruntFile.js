@@ -4,15 +4,18 @@ module.exports = function (grunt) {
         pkg: grunt.file.readJSON('package.json'),
         src: {
             js: ['smart-table-module/js/*.js'],
-            html: ['smart-table-module/partials/*.html']
+            html: ['smart-table-module/partials/*.html'],
+			css: ['smart-table-module/css/*.css']
         },
         concat: {
-            options: {
-            },
-            dist: {
-                src: ['<%= src.js %>'],
-                dest: './<%= pkg.name %>.debug.js'
-            }
+            js: {
+			  src: ['<%= src.js %>'],
+              dest: './<%= pkg.name %>.debug.js'
+			},
+			css: {
+			  src: ['<%= src.css %>'],
+			  dest: './<%= pkg.name %>.css'
+			}
         },
         "regex-replace": {
             dist: {
@@ -83,7 +86,8 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-template');
     grunt.registerTask('build', function() {
         grunt.task.run('html2js:smartTable');
-        grunt.task.run('concat');
+        grunt.task.run('concat:js');
+		grunt.task.run('concat:css');
         if (grunt.option('startSymbol') && grunt.option('endSymbol')) grunt.task.run('regex-replace');
         grunt.task.run('uglify');
         grunt.task.run('template');

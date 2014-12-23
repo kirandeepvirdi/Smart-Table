@@ -1,0 +1,59 @@
+.wrapper {
+	margin: 25px;
+}
+.top-left, .bottom-left {
+    float:left;
+}
+.bottom-left, .bottom-right {
+    height: 250px;
+}
+.top-right {
+    overflow: hidden;
+	width: 600px;
+	padding-right: 18px;
+	border-right: 1px solid #e3e3e3;
+}
+.bottom-right {
+    overflow: scroll;
+	width: 618px;
+	padding-right: 18px;
+	margin-bottom: -18px;
+	padding-bottom: 18px;
+}
+.bottom-left {
+    overflow: hidden;
+}
+.pagination-wrapper {
+	margin-top: 25px;
+	width: 580px;
+	border: none;
+}
+.pagination-wrapper table {
+	width: 100%;
+	padding-left: 250px;
+	border-collapse: separate;
+}
+
+.pagination-wrapper table td{
+	border: none;
+}
+
+.top-right table, .bottom-right table {
+    width: 125%;
+    height: 125%;
+    
+}
+.bottom-right table {
+    margin-bottom: -18px;
+	margin-left: -1px;
+}
+
+table th, table td {
+    width: 150px;
+	padding: 6px;
+	border-bottom: 1px solid #e3e3e3;
+	text-align : center;
+}
+table {
+    table-layout: fixed;
+}
