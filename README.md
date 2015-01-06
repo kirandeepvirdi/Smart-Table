@@ -9,6 +9,7 @@
 - Set "sort-ascent"/"sort-descent" class on `<th>`'s directly (rather than on the `<span>` inside them)
 - Removed `isGlobalSearchActivated` flag
 - Added Fixed subHeader functionality
+- Added Horizontal Scroll with Fixed column to smartTable with configurable options
 
 ### Events
 
@@ -79,6 +80,12 @@ scope.subHeaders = [{
 					'bar':{'label':'subHeader2--secondColumn','subHeaderCellClass':'subHeader2','formatFunction':'uppercase'},
 					}];
 ```
+* Horizontal Scroll with Fixed column feature
+* Fixed column can be configured using 'no-of-fixed-column' attribute in '<smart-table>' directive
+* provide integer number to 'no-of-fixed-column' attribute to fixed that number of column to fixed
+* Basic fixed-column style is provided inside build with Smart-Table.css file.
+
+
 You'll find running examples and more documentation at [the demo website](http://lorenzofox3.github.io/smart-table-website/)
 
 ## Smart Table for developers
