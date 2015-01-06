@@ -63,8 +63,7 @@
                     dataCollection: '=rows',
                     config: '=',
                     subHeaderCollection: '=subHeaders',
-                    noOfFixedColumn : '=',
-                    fetch : '='
+                    noOfFixedColumn : '='
                 },
                 replace: 'true',
                 template: '<div ng-include="contentUrl"></div>',
