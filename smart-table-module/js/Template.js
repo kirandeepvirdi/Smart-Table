@@ -116,26 +116,14 @@ angular.module("partials/smartTableFixedColumn.html", []).run(["$templateCache",
     "		</table>\n" +
     "	</div>\n" +
     "	\n" +
-    "	<div class=\"bottom-right\" ng-switch on=\"isPaginationEnabled\">\n" +
-    "		<div ng-switch-when=\"true\">\n" +
-    "			<table id=\"right_Body\" class=\"smart-table\">\n" +
-    "				<tbody>\n" +
-    "			        <tr ng-repeat=\"dataRow in displayedCollection\" id=\"bottom-right-{{$index}}\" ng-class=\"{selected:dataRow.isSelected}\" class=\"smart-table-data-row\">\n" +
-    "			            <td ng-repeat=\"column in columns | greaterThan : noOfFixedColumn\" class=\"smart-table-data-cell {{column.cellClass}}\"></td>\n" +
-    "			        </tr>\n" +
-    "			    </tbody>\n" +
-    "			</table>\n" +
-    "		</div>\n" +
-    "		<div ng-switch-when=\"false\"  infinite-scroll=\"fetch()\" infinite-scroll-distance='2' infinite-scroll-parent=\"true\">\n" +
-    "			<table id=\"right_Body\" class=\"smart-table\">\n" +
-    "				<tbody>\n" +
-    "			        <tr ng-repeat=\"dataRow in displayedCollection\" id=\"bottom-right-{{$index}}\" ng-class=\"{selected:dataRow.isSelected}\" class=\"smart-table-data-row\">\n" +
-    "			            <td ng-repeat=\"column in columns | greaterThan : noOfFixedColumn\" class=\"smart-table-data-cell {{column.cellClass}}\"></td>\n" +
-    "			        </tr>\n" +
-    "			    </tbody>\n" +
-    "			</table>\n" +
-    "		</div>\n" +
-    "	    \n" +
+    "	<div class=\"bottom-right\">\n" +
+    "		<table id=\"right_Body\" class=\"smart-table\">\n" +
+    "			<tbody>\n" +
+    "				<tr ng-repeat=\"dataRow in displayedCollection\" id=\"bottom-right-{{$index}}\" ng-class=\"{selected:dataRow.isSelected}\" class=\"smart-table-data-row\">\n" +
+    "					<td ng-repeat=\"column in columns | greaterThan : noOfFixedColumn\" class=\"smart-table-data-cell {{column.cellClass}}\"></td>\n" +
+    "				</tr>\n" +
+    "			</tbody>\n" +
+    "		</table>\n" +
     "	</div>\n" +
     "	\n" +
     "	<div ng-show=\"isPaginationEnabled\" class=\"pagination-wrapper\">\n" +

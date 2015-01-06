@@ -88,8 +88,19 @@
                     }, true);
 					
 					
-					function syncTableBodyRows(newValue){
-						for(var i=0; i<=newValue.length ;i++ ){
+					function syncTableRowsHeight(totalRows){
+						
+						for (var i = 0; i < angular.element('.top-left').find('tr').length; i++) {
+							var tlhieght = angular.element('.top-left').find('tr:eq( ' + i + ' )').find('th:eq( 0 )').height(),
+								trhieght = angular.element('.top-right').find('tr:eq( ' + i + ' )').find('th:eq( 0 )').height();
+							if (tlhieght <= trhieght) {
+								angular.element('.top-left').find('tr:eq( ' + i + ' )').find('th:eq( 0 )').height(trhieght);
+							} else {
+								angular.element('.top-right').find('tr:eq( ' + i + ' )').find('th:eq( 0 )').height(tlhieght)
+							}
+						}
+						
+						for(var i=0; i<= totalRows.length ;i++ ){
 							var blhieght = angular.element('#bottom-left-'+i).find('td:eq( 0 )').height(),
 								brhieght = angular.element('#bottom-right-'+i).find('td:eq( 0 )').height();
 							if(blhieght !== brhieght){
@@ -100,21 +111,11 @@
 								}
 							}
 						}
+						
 					};
 					
-					function syncTableHeaderRows(){
-						for (var i = 0; i < angular.element('.top-left').find('tr').length; i++) {
-							var tlhieght = angular.element('.top-left').find('tr:eq( ' + i + ' )').find('th:eq( 0 )').height(),
-								trhieght = angular.element('.top-right').find('tr:eq( ' + i + ' )').find('th:eq( 0 )').height();
-							if (tlhieght <= trhieght) {
-								angular.element('.top-left').find('tr:eq( ' + i + ' )').find('th:eq( 0 )').height(trhieght);
-							} else {
-								angular.element('.top-right').find('tr:eq( ' + i + ' )').find('th:eq( 0 )').height(tlhieght)
-							}
-						}
-					};
+					function syncTableColumnsWidth(){
 					
-					function syncTableColumns(){
 						for (var i = 0; i < angular.element('.top-left').find('tr:eq( 0 )').find('th').length; i++) {
 							var bwidth = angular.element('.bottom-left').find('tr:eq( 0 )').find('td:eq(' + i + ')').width(),
 								twidth = angular.element('.top-left').find('tr:eq( 0 )').find('th:eq(' + i + ')').width();
@@ -141,9 +142,8 @@
 					};
 					
 					function applyFixedColumn(){
-						syncTableHeaderRows();
-						syncTableBodyRows(scope.dataCollection);
-						syncTableColumns();
+						syncTableRowsHeight(scope.dataCollection);
+						syncTableColumnsWidth();
 						
 						angular.element('.bottom-right').scroll(function() {
 							angular.element('.top-right').scrollLeft(angular.element('.bottom-right').scrollLeft());

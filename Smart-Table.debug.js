@@ -141,8 +141,19 @@
                     }, true);
 					
 					
-					function syncTableBodyRows(newValue){
-						for(var i=0; i<=newValue.length ;i++ ){
+					function syncTableRowsHeight(totalRows){
+						
+						for (var i = 0; i < angular.element('.top-left').find('tr').length; i++) {
+							var tlhieght = angular.element('.top-left').find('tr:eq( ' + i + ' )').find('th:eq( 0 )').height(),
+								trhieght = angular.element('.top-right').find('tr:eq( ' + i + ' )').find('th:eq( 0 )').height();
+							if (tlhieght <= trhieght) {
+								angular.element('.top-left').find('tr:eq( ' + i + ' )').find('th:eq( 0 )').height(trhieght);
+							} else {
+								angular.element('.top-right').find('tr:eq( ' + i + ' )').find('th:eq( 0 )').height(tlhieght)
+							}
+						}
+						
+						for(var i=0; i<= totalRows.length ;i++ ){
 							var blhieght = angular.element('#bottom-left-'+i).find('td:eq( 0 )').height(),
 								brhieght = angular.element('#bottom-right-'+i).find('td:eq( 0 )').height();
 							if(blhieght !== brhieght){
@@ -153,21 +164,11 @@
 								}
 							}
 						}
+						
 					};
 					
-					function syncTableHeaderRows(){
-						for (var i = 0; i < angular.element('.top-left').find('tr').length; i++) {
-							var tlhieght = angular.element('.top-left').find('tr:eq( ' + i + ' )').find('th:eq( 0 )').height(),
-								trhieght = angular.element('.top-right').find('tr:eq( ' + i + ' )').find('th:eq( 0 )').height();
-							if (tlhieght <= trhieght) {
-								angular.element('.top-left').find('tr:eq( ' + i + ' )').find('th:eq( 0 )').height(trhieght);
-							} else {
-								angular.element('.top-right').find('tr:eq( ' + i + ' )').find('th:eq( 0 )').height(tlhieght)
-							}
-						}
-					};
+					function syncTableColumnsWidth(){
 					
-					function syncTableColumns(){
 						for (var i = 0; i < angular.element('.top-left').find('tr:eq( 0 )').find('th').length; i++) {
 							var bwidth = angular.element('.bottom-left').find('tr:eq( 0 )').find('td:eq(' + i + ')').width(),
 								twidth = angular.element('.top-left').find('tr:eq( 0 )').find('th:eq(' + i + ')').width();
@@ -194,9 +195,8 @@
 					};
 					
 					function applyFixedColumn(){
-						syncTableHeaderRows();
-						syncTableBodyRows(scope.dataCollection);
-						syncTableColumns();
+						syncTableRowsHeight(scope.dataCollection);
+						syncTableColumnsWidth();
 						
 						angular.element('.bottom-right').scroll(function() {
 							angular.element('.top-right').scrollLeft(angular.element('.bottom-right').scrollLeft());
@@ -494,7 +494,7 @@
 
 (function (angular) {
     "use strict";
-    angular.module('smartTable.table', ['smartTable.column', 'smartTable.utilities', 'smartTable.directives', 'smartTable.filters', 'ui.bootstrap.pagination.smartTable','infinite-scroll'])
+    angular.module('smartTable.table', ['smartTable.column', 'smartTable.utilities', 'smartTable.directives', 'smartTable.filters', 'ui.bootstrap.pagination.smartTable'])
         .constant('DefaultTableConfiguration', {
             selectionMode: 'none',
             displaySelectionCheckbox: false,
@@ -895,26 +895,14 @@ angular.module("partials/smartTableFixedColumn.html", []).run(["$templateCache",
     "		</table>\n" +
     "	</div>\n" +
     "	\n" +
-    "	<div class=\"bottom-right\" ng-switch on=\"isPaginationEnabled\">\n" +
-    "		<div ng-switch-when=\"true\">\n" +
-    "			<table id=\"right_Body\" class=\"smart-table\">\n" +
-    "				<tbody>\n" +
-    "			        <tr ng-repeat=\"dataRow in displayedCollection\" id=\"bottom-right-{{$index}}\" ng-class=\"{selected:dataRow.isSelected}\" class=\"smart-table-data-row\">\n" +
-    "			            <td ng-repeat=\"column in columns | greaterThan : noOfFixedColumn\" class=\"smart-table-data-cell {{column.cellClass}}\"></td>\n" +
-    "			        </tr>\n" +
-    "			    </tbody>\n" +
-    "			</table>\n" +
-    "		</div>\n" +
-    "		<div ng-switch-when=\"false\"  infinite-scroll=\"fetch()\" infinite-scroll-distance='2' infinite-scroll-parent=\"true\">\n" +
-    "			<table id=\"right_Body\" class=\"smart-table\">\n" +
-    "				<tbody>\n" +
-    "			        <tr ng-repeat=\"dataRow in displayedCollection\" id=\"bottom-right-{{$index}}\" ng-class=\"{selected:dataRow.isSelected}\" class=\"smart-table-data-row\">\n" +
-    "			            <td ng-repeat=\"column in columns | greaterThan : noOfFixedColumn\" class=\"smart-table-data-cell {{column.cellClass}}\"></td>\n" +
-    "			        </tr>\n" +
-    "			    </tbody>\n" +
-    "			</table>\n" +
-    "		</div>\n" +
-    "	    \n" +
+    "	<div class=\"bottom-right\">\n" +
+    "		<table id=\"right_Body\" class=\"smart-table\">\n" +
+    "			<tbody>\n" +
+    "				<tr ng-repeat=\"dataRow in displayedCollection\" id=\"bottom-right-{{$index}}\" ng-class=\"{selected:dataRow.isSelected}\" class=\"smart-table-data-row\">\n" +
+    "					<td ng-repeat=\"column in columns | greaterThan : noOfFixedColumn\" class=\"smart-table-data-cell {{column.cellClass}}\"></td>\n" +
+    "				</tr>\n" +
+    "			</tbody>\n" +
+    "		</table>\n" +
     "	</div>\n" +
     "	\n" +
     "	<div ng-show=\"isPaginationEnabled\" class=\"pagination-wrapper\">\n" +
@@ -1068,89 +1056,6 @@ angular.module("partials/smartTableFixedColumn.html", []).run(["$templateCache",
 
 
 
-/* ng-infinite-scroll - v1.0.0 - 2013-05-13 */
-var mod;
-
-mod = angular.module('infinite-scroll', []);
-
-mod.directive('infiniteScroll', [
-  '$rootScope', '$window', '$timeout', function($rootScope, $window, $timeout) {
-    return {
-      link: function(scope, elem, attrs) {
-        var checkWhenEnabled, container, handler, scrollDistance, scrollEnabled;
-        $window = angular.element($window);
-        scrollDistance = 0;
-        if (attrs.infiniteScrollDistance != null) {
-          scope.$watch(attrs.infiniteScrollDistance, function(value) {
-            return scrollDistance = parseInt(value, 10);
-          });
-        }
-        scrollEnabled = true;
-        checkWhenEnabled = false;
-        if (attrs.infiniteScrollDisabled != null) {
-          scope.$watch(attrs.infiniteScrollDisabled, function(value) {
-            scrollEnabled = !value;
-            if (scrollEnabled && checkWhenEnabled) {
-              checkWhenEnabled = false;
-              return handler();
-            }
-          });
-        }
-        container = $window;
-        if (attrs.infiniteScrollContainer != null) {
-          scope.$watch(attrs.infiniteScrollContainer, function(value) {
-            value = angular.element(value);
-            if (value != null) {
-              return container = value;
-            } else {
-              throw new Exception("invalid infinite-scroll-container attribute.");
-            }
-          });
-        }
-        if (attrs.infiniteScrollParent != null) {
-          container = elem.parent();
-          scope.$watch(attrs.infiniteScrollParent, function() {
-            return container = elem.parent();
-          });
-        }
-        handler = function() {
-          var containerBottom, elementBottom, remaining, shouldScroll;
-          if (container === $window) {
-            containerBottom = container.height() + container.scrollTop();
-            elementBottom = elem.offset().top + elem.height();
-          } else {
-            containerBottom = container.height();
-            elementBottom = elem.offset().top - container.offset().top + elem.height();
-          }
-          remaining = elementBottom - containerBottom;
-          shouldScroll = remaining <= container.height() * scrollDistance;
-          if (shouldScroll && scrollEnabled) {
-            if ($rootScope.$$phase) {
-              return scope.$eval(attrs.infiniteScroll);
-            } else {
-              return scope.$apply(attrs.infiniteScroll);
-            }
-          } else if (shouldScroll) {
-            return checkWhenEnabled = true;
-          }
-        };
-        container.on('scroll', handler);
-        scope.$on('$destroy', function() {
-          return container.off('scroll', handler);
-        });
-        return $timeout((function() {
-          if (attrs.infiniteScrollImmediateCheck) {
-            if (scope.$eval(attrs.infiniteScrollImmediateCheck)) {
-              return handler();
-            }
-          } else {
-            return handler();
-          }
-        }), 0);
-      }
-    };
-  }
-]);
 (function (angular) {
     angular.module('ui.bootstrap.pagination.smartTable', ['smartTable.templateUrlList'])
 
