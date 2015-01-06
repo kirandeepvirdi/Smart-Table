@@ -16,7 +16,7 @@
                 template: '<div ng-include="contentUrl"></div>',
                 controller: 'TableCtrl',
                 link: function (scope, element, attr, ctrl) {
-
+					
                 	scope.contentUrl = templateList.smartTable;
                     scope.$watch("noOfFixedColumn",function(newValue){
                     	if(newValue && parseInt(newValue) >0 ) {
@@ -70,7 +70,7 @@
                     //if item are added or removed into the data model from outside the grid
                     scope.$watch('dataCollection', function () {
                         ctrl.sortBy();
-
+						//if noOfFixedColumn is provided then we need to align the table
 						if(scope.noOfFixedColumn && parseInt(scope.noOfFixedColumn) > 0){
 							$timeout(function(){
 								applyFixedColumn();
@@ -79,6 +79,7 @@
                     }, true);
                     scope.$watch('subHeaderCollection', function (newValue) {
                         ctrl.setSubHeaderDataRow(newValue);
+						//if noOfFixedColumn is provided then we need to align the table
 						if(scope.noOfFixedColumn && parseInt(scope.noOfFixedColumn) > 0){
 							$timeout(function(){
 								applyFixedColumn();
@@ -86,9 +87,9 @@
 						}
                     }, true);
 					
-					
+					//This function is used to align the row height of header and body rows of all table
 					function syncTableRowsHeight(totalRows){
-						
+						//loop through all the top left tr match all tr height with top right table and set accordingly
 						for (var i = 0; i < angular.element('.top-left').find('tr').length; i++) {
 							var tlhieght = angular.element('.top-left').find('tr:eq( ' + i + ' )').find('th:eq( 0 )').height(),
 								trhieght = angular.element('.top-right').find('tr:eq( ' + i + ' )').find('th:eq( 0 )').height();
@@ -99,6 +100,7 @@
 							}
 						}
 						
+						//loop through totalRows and match all tr height with bottom-left and bottom-right table and set accordingly
 						for(var i=0; i<= totalRows.length ;i++ ){
 							var blhieght = angular.element('#bottom-left-'+i).find('td:eq( 0 )').height(),
 								brhieght = angular.element('#bottom-right-'+i).find('td:eq( 0 )').height();
@@ -113,8 +115,10 @@
 						
 					};
 					
+					//this function is used to synch table column width
 					function syncTableColumnsWidth(){
 					
+						//loop through the top-left column and compare with bottom-left to synch width
 						for (var i = 0; i < angular.element('.top-left').find('tr:eq( 0 )').find('th').length; i++) {
 							var bwidth = angular.element('.bottom-left').find('tr:eq( 0 )').find('td:eq(' + i + ')').width(),
 								twidth = angular.element('.top-left').find('tr:eq( 0 )').find('th:eq(' + i + ')').width();
@@ -126,7 +130,7 @@
 								}
 							}
 						};
-
+						//loop through the top-right column and compare with bottom-right to synch width
 						for (var i = 0; i < angular.element('.top-right').find('tr:eq( 0 )').find('th').length; i++) {
 							var bwidth = angular.element('.bottom-right').find('tr:eq( 0 )').find('td:eq(' + i + ')').width(),
 								twidth = angular.element('.top-right').find('tr:eq( 0 )').find('th:eq(' + i + ')').width();
@@ -140,6 +144,7 @@
 						};
 					};
 					
+					//this is common function which call both height and width of rows and apply scroll to table
 					function applyFixedColumn(){
 						syncTableRowsHeight(scope.dataCollection);
 						syncTableColumnsWidth();
@@ -150,6 +155,7 @@
 						});
 					};
 					
+					//$timeout is used for apply fixed column if noOfFixedColumn attribute is present
 					$timeout(function(){
 						if(scope.noOfFixedColumn && parseInt(scope.noOfFixedColumn) > 0){
 							applyFixedColumn();
