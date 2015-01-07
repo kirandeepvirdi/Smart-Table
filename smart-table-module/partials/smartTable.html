@@ -1,25 +1,30 @@
-<table class="smart-table">
-    <thead>
-    <tr class="smart-table-header-row">
-        <th ng-repeat="column in columns" ng-include="column.headerTemplateUrl" scope="col" class="smart-table-header-cell {{column.headerClass}}" ng-class="{'sort-ascent':column.reverse==true, 'sort-descent':column.reverse==false}"></th>
-    </tr>
-    <tr class="smart-table-subheader-row" ng-repeat="subHeaderRow in subHeaders">
-        <th ng-repeat="column in columns" scope="column" class="smart-table-subheader-cell {{subHeaderCellClass}}"></th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr ng-repeat="dataRow in displayedCollection" ng-class="{selected:dataRow.isSelected}"
-        class="smart-table-data-row">
-        <td ng-repeat="column in columns" class="smart-table-data-cell {{column.cellClass}}"></td>
-    </tr>
-    </tbody>
-    <tfoot ng-show="isPaginationEnabled">
-    <tr class="smart-table-footer-row">
-        <td colspan="{{columns.length}}">
-            <div pagination-smart-table="" num-pages="numberOfPages" max-size="maxSize" current-page="currentPage"></div>
-        </td>
-    </tr>
-    </tfoot>
-</table>
-
+<!-- infinite-scroll -->
+	<div
+		infinite-scroll="fetch()"
+		infinite-scroll-active="!$parent.state.disableInfiniteScroll"
+	>
+		<table class="smart-table">
+			<thead>
+			<tr class="smart-table-header-row">
+				<th ng-repeat="column in columns" ng-include="column.headerTemplateUrl" scope="col" class="smart-table-header-cell {{column.headerClass}}" ng-class="{'sort-ascent':column.reverse==true, 'sort-descent':column.reverse==false}"></th>
+			</tr>
+			<tr class="smart-table-subheader-row" ng-repeat="subHeaderRow in subHeaders">
+				<th ng-repeat="column in columns" scope="column" class="smart-table-subheader-cell {{subHeaderCellClass}}"></th>
+			</tr>
+			</thead>
+			<tbody>
+			<tr ng-repeat="dataRow in displayedCollection" ng-class="{selected:dataRow.isSelected}"
+				class="smart-table-data-row">
+				<td ng-repeat="column in columns" class="smart-table-data-cell {{column.cellClass}}"></td>
+			</tr>
+			</tbody>
+			<tfoot ng-show="isPaginationEnabled">
+			<tr class="smart-table-footer-row">
+				<td colspan="{{columns.length}}">
+					<div pagination-smart-table="" num-pages="numberOfPages" max-size="maxSize" current-page="currentPage"></div>
+				</td>
+			</tr>
+			</tfoot>
+		</table>
+	</div>
 

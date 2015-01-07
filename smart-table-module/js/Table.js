@@ -2,7 +2,7 @@
 
 (function (angular) {
     "use strict";
-    angular.module('smartTable.table', ['smartTable.column', 'smartTable.utilities', 'smartTable.directives', 'smartTable.filters', 'ui.bootstrap.pagination.smartTable'])
+    angular.module('smartTable.table', ['smartTable.column', 'smartTable.utilities', 'smartTable.directives', 'smartTable.filters', 'ui.bootstrap.pagination.smartTable','infinite-scroll'])
         .constant('DefaultTableConfiguration', {
             selectionMode: 'none',
             displaySelectionCheckbox: false,

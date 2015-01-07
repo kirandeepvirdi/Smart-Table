@@ -35,14 +35,29 @@
 		</table>
 	</div>
 	
-	<div class="bottom-right">
-		<table id="right_Body" class="smart-table">
-			<tbody>
-				<tr ng-repeat="dataRow in displayedCollection" id="bottom-right-{{$index}}" ng-class="{selected:dataRow.isSelected}" class="smart-table-data-row">
-					<td ng-repeat="column in columns | greaterThan : noOfFixedColumn" class="smart-table-data-cell {{column.cellClass}}"></td>
-				</tr>
-			</tbody>
-		</table>
+	<div class="bottom-right" ng-switch on="isPaginationEnabled">
+		<div ng-switch-when="true">
+			<table id="right_Body" class="smart-table">
+				<tbody>
+			        <tr ng-repeat="dataRow in displayedCollection" id="bottom-right-{{$index}}" ng-class="{selected:dataRow.isSelected}" class="smart-table-data-row">
+			            <td ng-repeat="column in columns | greaterThan : noOfFixedColumn" class="smart-table-data-cell {{column.cellClass}}"></td>
+			        </tr>
+			    </tbody>
+			</table>
+		</div>
+		<div ng-switch-when="false" 
+			 infinite-scroll="fetch()"
+			 infinite-scroll-distance="2"
+			 infinite-scroll-active="!$parent.state.disableInfiniteScroll"
+			 infinite-scroll-parent="true">
+			<table id="right_Body" class="smart-table">
+				<tbody>
+			        <tr ng-repeat="dataRow in displayedCollection" id="bottom-right-{{$index}}" ng-class="{selected:dataRow.isSelected}" class="smart-table-data-row">
+			            <td ng-repeat="column in columns | greaterThan : noOfFixedColumn" class="smart-table-data-cell {{column.cellClass}}"></td>
+			        </tr>
+			    </tbody>
+			</table>
+		</div>
 	</div>
 	
 	<div ng-show="isPaginationEnabled" class="pagination-wrapper">

@@ -81,10 +81,11 @@ scope.subHeaders = [{
 					}];
 ```
 * Horizontal Scroll with Fixed column feature
-* Fixed column can be configured using 'no-of-fixed-column' attribute in '<smart-table>' directive
-* provide integer number to 'no-of-fixed-column' attribute to fixed that number of column to fixed
-* Basic fixed-column style is provided inside build with Smart-Table.css file.
-
+   * Fixed column can be configured using 'no-of-fixed-column' attribute in '<smart-table>' directive
+   * provide integer number to 'no-of-fixed-column' attribute to fixed that number of column to fixed
+   * by default pagination is enable in smart-table but if you want to use infinite scroll then you need to pass 		     'isPaginationEnabled' as false in config attribute in '<smart-table>' directive
+   * you also need to pass function which will load more data while infinite scroll is enable in smart-table using 'fetch'        attribute
+   * Basic fixed-column style is provided inside build with Smart-Table.css file.
 
 You'll find running examples and more documentation at [the demo website](http://lorenzofox3.github.io/smart-table-website/)
 
