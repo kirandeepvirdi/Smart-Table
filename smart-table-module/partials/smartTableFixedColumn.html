@@ -46,9 +46,9 @@
 			</table>
 		</div>
 		<div ng-switch-when="false" 
-			 infinite-scroll="fetch()"
+			 ui-infinite-scroll="fetch()"
 			 infinite-scroll-distance="2"
-			 infinite-scroll-active="!$parent.state.disableInfiniteScroll"
+			 infinite-scroll-active="!disableInfiniteScroll"
 			 infinite-scroll-parent="true">
 			<table id="right_Body" class="smart-table">
 				<tbody>

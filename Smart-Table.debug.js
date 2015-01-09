@@ -63,18 +63,14 @@
                     dataCollection: '=rows',
                     config: '=',
                     subHeaderCollection: '=subHeaders',
-                    noOfFixedColumn : '=',
-                    fetch : '='
+                    noOfFixedColumn: '=',
+                    fetch: '=',
+					disableInfiniteScroll: '='
                 },
                 replace: 'true',
                 template: '<div ng-include="contentUrl"></div>',
                 controller: 'TableCtrl',
                 link: function (scope, element, attr, ctrl) {
-					
-					scope.$watch('$parent.state.disableInfiniteScroll',function(oldValue,newValue){
-						console.log(oldValue,newValue);
-					});
-					
                 	scope.contentUrl = templateList.smartTable;
                     scope.$watch("noOfFixedColumn",function(newValue){
                     	if(newValue && parseInt(newValue) >0 ) {
@@ -838,35 +834,30 @@ angular.module("partials/selectionCheckbox.html", []).run(["$templateCache", fun
 
 angular.module("partials/smartTable.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("partials/smartTable.html",
-    "<!-- infinite-scroll -->\n" +
-    "	<div\n" +
-    "		infinite-scroll=\"fetch()\"\n" +
-    "		infinite-scroll-active=\"!$parent.state.disableInfiniteScroll\"\n" +
-    "	>\n" +
-    "		<table class=\"smart-table\">\n" +
-    "			<thead>\n" +
-    "			<tr class=\"smart-table-header-row\">\n" +
-    "				<th ng-repeat=\"column in columns\" ng-include=\"column.headerTemplateUrl\" scope=\"col\" class=\"smart-table-header-cell {{column.headerClass}}\" ng-class=\"{'sort-ascent':column.reverse==true, 'sort-descent':column.reverse==false}\"></th>\n" +
-    "			</tr>\n" +
-    "			<tr class=\"smart-table-subheader-row\" ng-repeat=\"subHeaderRow in subHeaders\">\n" +
-    "				<th ng-repeat=\"column in columns\" scope=\"column\" class=\"smart-table-subheader-cell {{subHeaderCellClass}}\"></th>\n" +
-    "			</tr>\n" +
-    "			</thead>\n" +
-    "			<tbody>\n" +
-    "			<tr ng-repeat=\"dataRow in displayedCollection\" ng-class=\"{selected:dataRow.isSelected}\"\n" +
-    "				class=\"smart-table-data-row\">\n" +
-    "				<td ng-repeat=\"column in columns\" class=\"smart-table-data-cell {{column.cellClass}}\"></td>\n" +
-    "			</tr>\n" +
-    "			</tbody>\n" +
-    "			<tfoot ng-show=\"isPaginationEnabled\">\n" +
-    "			<tr class=\"smart-table-footer-row\">\n" +
-    "				<td colspan=\"{{columns.length}}\">\n" +
-    "					<div pagination-smart-table=\"\" num-pages=\"numberOfPages\" max-size=\"maxSize\" current-page=\"currentPage\"></div>\n" +
-    "				</td>\n" +
-    "			</tr>\n" +
-    "			</tfoot>\n" +
-    "		</table>\n" +
-    "	</div>\n" +
+    "<table class=\"smart-table\">\n" +
+    "	<thead>\n" +
+    "	<tr class=\"smart-table-header-row\">\n" +
+    "		<th ng-repeat=\"column in columns\" ng-include=\"column.headerTemplateUrl\" scope=\"col\" class=\"smart-table-header-cell {{column.headerClass}}\" ng-class=\"{'sort-ascent':column.reverse==true, 'sort-descent':column.reverse==false}\"></th>\n" +
+    "	</tr>\n" +
+    "	<tr class=\"smart-table-subheader-row\" ng-repeat=\"subHeaderRow in subHeaders\">\n" +
+    "		<th ng-repeat=\"column in columns\" scope=\"column\" class=\"smart-table-subheader-cell {{subHeaderCellClass}}\"></th>\n" +
+    "	</tr>\n" +
+    "	</thead>\n" +
+    "	<tbody>\n" +
+    "	<tr ng-repeat=\"dataRow in displayedCollection\" ng-class=\"{selected:dataRow.isSelected}\"\n" +
+    "		class=\"smart-table-data-row\">\n" +
+    "		<td ng-repeat=\"column in columns\" class=\"smart-table-data-cell {{column.cellClass}}\"></td>\n" +
+    "	</tr>\n" +
+    "	</tbody>\n" +
+    "	<tfoot ng-show=\"isPaginationEnabled\">\n" +
+    "	<tr class=\"smart-table-footer-row\">\n" +
+    "		<td colspan=\"{{columns.length}}\">\n" +
+    "			<div pagination-smart-table=\"\" num-pages=\"numberOfPages\" max-size=\"maxSize\" current-page=\"currentPage\"></div>\n" +
+    "		</td>\n" +
+    "	</tr>\n" +
+    "	</tfoot>\n" +
+    "</table>\n" +
+    "\n" +
     "\n" +
     "");
 }]);
@@ -921,9 +912,9 @@ angular.module("partials/smartTableFixedColumn.html", []).run(["$templateCache",
     "			</table>\n" +
     "		</div>\n" +
     "		<div ng-switch-when=\"false\" \n" +
-    "			 infinite-scroll=\"fetch()\"\n" +
+    "			 ui-infinite-scroll=\"fetch()\"\n" +
     "			 infinite-scroll-distance=\"2\"\n" +
-    "			 infinite-scroll-active=\"!$parent.state.disableInfiniteScroll\"\n" +
+    "			 infinite-scroll-active=\"!disableInfiniteScroll\"\n" +
     "			 infinite-scroll-parent=\"true\">\n" +
     "			<table id=\"right_Body\" class=\"smart-table\">\n" +
     "				<tbody>\n" +
@@ -1091,7 +1082,7 @@ var mod;
 
 mod = angular.module('infinite-scroll', []);
 
-mod.directive('infiniteScroll', [
+mod.directive('uiInfiniteScroll', [
   '$rootScope', '$window', '$timeout', function($rootScope, $window, $timeout) {
     return {
       link: function(scope, elem, attrs) {
@@ -1144,9 +1135,9 @@ mod.directive('infiniteScroll', [
           shouldScroll = remaining <= container.height() * scrollDistance;
           if (shouldScroll && scrollEnabled) {
             if ($rootScope.$$phase) {
-              return scope.$eval(attrs.infiniteScroll);
+              return scope.$eval(attrs.uiInfiniteScroll);
             } else {
-              return scope.$apply(attrs.infiniteScroll);
+              return scope.$apply(attrs.uiInfiniteScroll);
             }
           } else if (shouldScroll) {
             return checkWhenEnabled = true;

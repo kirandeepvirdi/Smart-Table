@@ -10,18 +10,14 @@
                     dataCollection: '=rows',
                     config: '=',
                     subHeaderCollection: '=subHeaders',
-                    noOfFixedColumn : '=',
-                    fetch : '='
+                    noOfFixedColumn: '=',
+                    fetch: '=',
+					disableInfiniteScroll: '='
                 },
                 replace: 'true',
                 template: '<div ng-include="contentUrl"></div>',
                 controller: 'TableCtrl',
                 link: function (scope, element, attr, ctrl) {
-					
-					scope.$watch('$parent.state.disableInfiniteScroll',function(oldValue,newValue){
-						console.log(oldValue,newValue);
-					});
-					
                 	scope.contentUrl = templateList.smartTable;
                     scope.$watch("noOfFixedColumn",function(newValue){
                     	if(newValue && parseInt(newValue) >0 ) {
