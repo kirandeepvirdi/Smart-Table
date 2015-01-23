@@ -10,24 +10,23 @@
                     dataCollection: '=rows',
                     config: '=',
                     subHeaderCollection: '=subHeaders',
-                    noOfFixedColumn: '=',
                     fetch: '=',
-					disableInfiniteScroll: '='
+					disableInfiniteScroll: '=',
+					noOfFixedColumn: '='
                 },
                 replace: 'true',
-                template: '<div ng-include="contentUrl"></div>',
+                templateUrl: function(tElement, tAttrs){
+					var tUrl = templateList.smartTable;
+					if(tAttrs.noOfFixedColumn) {
+						tUrl = templateList.smartTableFixedColumn;
+					}
+					return tUrl;
+				},
                 controller: 'TableCtrl',
                 link: function (scope, element, attr, ctrl) {
-                	scope.contentUrl = templateList.smartTable;
-                    scope.$watch("noOfFixedColumn",function(newValue){
-                    	if(newValue && parseInt(newValue) >0 ) {
-                            scope.contentUrl = templateList.smartTableFixedColumn;
-                    	}
-                    });
-                	
-                    var templateObject;
-
-                    scope.$watch('config', function (config) {
+                	var templateObject;
+                    
+					scope.$watch('config', function (config) {
                         var newConfig = angular.extend({}, defaultConfig, config),
                             length = scope.columns !== undefined ? scope.columns.length : 0;
 
@@ -71,21 +70,11 @@
                     //if item are added or removed into the data model from outside the grid
                     scope.$watch('dataCollection', function () {
                         ctrl.sortBy();
-						//if noOfFixedColumn is provided then we need to align the table
-						if(scope.noOfFixedColumn && parseInt(scope.noOfFixedColumn) > 0){
-							$timeout(function(){
-								applyFixedColumn();
-							});
-						}
+						applyFixedColumn();
                     }, true);
                     scope.$watch('subHeaderCollection', function (newValue) {
-                        ctrl.setSubHeaderDataRow(newValue);
-						//if noOfFixedColumn is provided then we need to align the table
-						if(scope.noOfFixedColumn && parseInt(scope.noOfFixedColumn) > 0){
-							$timeout(function(){
-								applyFixedColumn();
-							});
-						}
+                        ctrl.setSubHeaderDataRow(newValue);						
+						applyFixedColumn();
                     }, true);
 					
 					//This function is used to align the row height of header and body rows of all table
@@ -147,22 +136,23 @@
 					
 					//this is common function which call both height and width of rows and apply scroll to table
 					function applyFixedColumn(){
-						syncTableRowsHeight(scope.dataCollection);
-						syncTableColumnsWidth();
-						
-						angular.element('.bottom-right').scroll(function() {
-							angular.element('.top-right').scrollLeft(angular.element('.bottom-right').scrollLeft());
-							angular.element('.bottom-left').scrollTop(angular.element('.bottom-right').scrollTop());
-						});
+						if(scope.noOfFixedColumn){
+							//$timeout is used for apply fixed column if noOfFixedColumn attribute is present						
+							$timeout(function(){
+								if(scope.noOfFixedColumn){
+									syncTableRowsHeight(scope.dataCollection);
+									syncTableColumnsWidth();
+									
+									angular.element('.bottom-right').scroll(function() {
+										angular.element('.top-right').scrollLeft(angular.element('.bottom-right').scrollLeft());
+										angular.element('.bottom-left').scrollTop(angular.element('.bottom-right').scrollTop());
+									});
+								}
+							});
+						}
 					};
 					
-					//$timeout is used for apply fixed column if noOfFixedColumn attribute is present
-					$timeout(function(){
-						if(scope.noOfFixedColumn && parseInt(scope.noOfFixedColumn) > 0){
-							applyFixedColumn();
-						}
-					});
-					
+					applyFixedColumn();
                 }
             };
         }])
