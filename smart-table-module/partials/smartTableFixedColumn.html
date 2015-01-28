@@ -13,16 +13,18 @@
 	</div>
 	
 	<div class="top-right">
-		<table id="right_Header" class="smart-table">
-			<thead>
-		        <tr class="smart-table-header-row">
-		            <th ng-repeat="column in columns | greaterThan : noOfFixedColumn" ng-include="column.headerTemplateUrl" scope="col" class="smart-table-header-cell {{column.headerClass}}" ng-class="{'sort-ascent':column.reverse==true, 'sort-descent':column.reverse==false}"></th>
-		        </tr>
-		        <tr class="smart-table-subheader-row" ng-repeat="subHeaderRow in subHeaders" id="top-right-{{$index}}">
-		            <th ng-repeat="column in columns | greaterThan : noOfFixedColumn" scope="column" class="smart-table-subheader-cell {{subHeaderCellClass}}"></th>
-		        </tr>
-		    </thead>
-		</table>
+		<div class="top-right-inner">
+			<table id="right_Header" class="smart-table">
+				<thead>
+					<tr class="smart-table-header-row">
+						<th ng-repeat="column in columns | greaterThan : noOfFixedColumn" ng-include="column.headerTemplateUrl" scope="col" class="smart-table-header-cell {{column.headerClass}}" ng-class="{'sort-ascent':column.reverse==true, 'sort-descent':column.reverse==false}"></th>
+					</tr>
+					<tr class="smart-table-subheader-row" ng-repeat="subHeaderRow in subHeaders" id="top-right-{{$index}}">
+						<th ng-repeat="column in columns | greaterThan : noOfFixedColumn" scope="column" class="smart-table-subheader-cell {{subHeaderCellClass}}"></th>
+					</tr>
+				</thead>
+			</table>
+		</div>
 	</div>
 	
 	<div class="bottom-left">
@@ -35,8 +37,8 @@
 		</table>
 	</div>
 	
-	<div class="bottom-right" ng-switch on="isPaginationEnabled">
-		<div ng-switch-when="true">
+	<div class="bottom-right">
+		<div ng-if="isPaginationEnabled">
 			<table id="right_Body" class="smart-table">
 				<tbody>
 			        <tr ng-repeat="dataRow in displayedCollection" id="bottom-right-{{$index}}" ng-class="{selected:dataRow.isSelected}" class="smart-table-data-row">
@@ -45,7 +47,7 @@
 			    </tbody>
 			</table>
 		</div>
-		<div ng-switch-when="false" 
+		<div ng-if="!isPaginationEnabled"
 			 ui-infinite-scroll="fetch()"
 			 infinite-scroll-distance="2"
 			 infinite-scroll-active="!disableInfiniteScroll"
@@ -60,7 +62,7 @@
 		</div>
 	</div>
 	
-	<div ng-show="isPaginationEnabled" class="pagination-wrapper">
+	<div ng-if="isPaginationEnabled" class="pagination-wrapper">
 		<table>
 			<tfoot>
 			    <tr class="smart-table-footer-row">

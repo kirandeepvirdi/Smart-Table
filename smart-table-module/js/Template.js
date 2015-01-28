@@ -94,16 +94,18 @@ angular.module("partials/smartTableFixedColumn.html", []).run(["$templateCache",
     "	</div>\n" +
     "	\n" +
     "	<div class=\"top-right\">\n" +
-    "		<table id=\"right_Header\" class=\"smart-table\">\n" +
-    "			<thead>\n" +
-    "		        <tr class=\"smart-table-header-row\">\n" +
-    "		            <th ng-repeat=\"column in columns | greaterThan : noOfFixedColumn\" ng-include=\"column.headerTemplateUrl\" scope=\"col\" class=\"smart-table-header-cell {{column.headerClass}}\" ng-class=\"{'sort-ascent':column.reverse==true, 'sort-descent':column.reverse==false}\"></th>\n" +
-    "		        </tr>\n" +
-    "		        <tr class=\"smart-table-subheader-row\" ng-repeat=\"subHeaderRow in subHeaders\" id=\"top-right-{{$index}}\">\n" +
-    "		            <th ng-repeat=\"column in columns | greaterThan : noOfFixedColumn\" scope=\"column\" class=\"smart-table-subheader-cell {{subHeaderCellClass}}\"></th>\n" +
-    "		        </tr>\n" +
-    "		    </thead>\n" +
-    "		</table>\n" +
+    "		<div class=\"top-right-inner\">\n" +
+    "			<table id=\"right_Header\" class=\"smart-table\">\n" +
+    "				<thead>\n" +
+    "					<tr class=\"smart-table-header-row\">\n" +
+    "						<th ng-repeat=\"column in columns | greaterThan : noOfFixedColumn\" ng-include=\"column.headerTemplateUrl\" scope=\"col\" class=\"smart-table-header-cell {{column.headerClass}}\" ng-class=\"{'sort-ascent':column.reverse==true, 'sort-descent':column.reverse==false}\"></th>\n" +
+    "					</tr>\n" +
+    "					<tr class=\"smart-table-subheader-row\" ng-repeat=\"subHeaderRow in subHeaders\" id=\"top-right-{{$index}}\">\n" +
+    "						<th ng-repeat=\"column in columns | greaterThan : noOfFixedColumn\" scope=\"column\" class=\"smart-table-subheader-cell {{subHeaderCellClass}}\"></th>\n" +
+    "					</tr>\n" +
+    "				</thead>\n" +
+    "			</table>\n" +
+    "		</div>\n" +
     "	</div>\n" +
     "	\n" +
     "	<div class=\"bottom-left\">\n" +
@@ -116,8 +118,8 @@ angular.module("partials/smartTableFixedColumn.html", []).run(["$templateCache",
     "		</table>\n" +
     "	</div>\n" +
     "	\n" +
-    "	<div class=\"bottom-right\" ng-switch on=\"isPaginationEnabled\">\n" +
-    "		<div ng-switch-when=\"true\">\n" +
+    "	<div class=\"bottom-right\">\n" +
+    "		<div ng-if=\"isPaginationEnabled\">\n" +
     "			<table id=\"right_Body\" class=\"smart-table\">\n" +
     "				<tbody>\n" +
     "			        <tr ng-repeat=\"dataRow in displayedCollection\" id=\"bottom-right-{{$index}}\" ng-class=\"{selected:dataRow.isSelected}\" class=\"smart-table-data-row\">\n" +
@@ -126,7 +128,7 @@ angular.module("partials/smartTableFixedColumn.html", []).run(["$templateCache",
     "			    </tbody>\n" +
     "			</table>\n" +
     "		</div>\n" +
-    "		<div ng-switch-when=\"false\" \n" +
+    "		<div ng-if=\"!isPaginationEnabled\"\n" +
     "			 ui-infinite-scroll=\"fetch()\"\n" +
     "			 infinite-scroll-distance=\"2\"\n" +
     "			 infinite-scroll-active=\"!disableInfiniteScroll\"\n" +
@@ -141,7 +143,7 @@ angular.module("partials/smartTableFixedColumn.html", []).run(["$templateCache",
     "		</div>\n" +
     "	</div>\n" +
     "	\n" +
-    "	<div ng-show=\"isPaginationEnabled\" class=\"pagination-wrapper\">\n" +
+    "	<div ng-if=\"isPaginationEnabled\" class=\"pagination-wrapper\">\n" +
     "		<table>\n" +
     "			<tfoot>\n" +
     "			    <tr class=\"smart-table-footer-row\">\n" +
