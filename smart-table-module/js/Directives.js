@@ -107,6 +107,16 @@
 					
 					//this function is used to synch table column width
 					function syncTableColumnsWidth(){
+						//It will synch header table and body table width
+						var headerTblWidth = element.find('#right_Header').width(),
+						bodytblWidth = element.find('#right_Body').width();
+						if(headerTblWidth !== bodytblWidth && headerTblWidth < bodytblWidth) {
+							element.find('#right_Header').width(bodytblWidth);
+						}
+						//if table has scrollbar additional padding will be added
+						if(element.find('.bottom-right').get(0).scrollHeight > element.find('.bottom-right').height()) {
+							element.find('.bottom-right').css({'padding-right': '18px'});
+						}
 					
 						//loop through the top-left column and compare with bottom-left to synch width
 						for (var i = 0; i < angular.element('.top-left').find('tr:eq( 0 )').find('th').length; i++) {
