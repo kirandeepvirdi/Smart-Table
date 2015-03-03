@@ -80,25 +80,25 @@
 					//This function is used to align the row height of header and body rows of all table
 					function syncTableRowsHeight(totalRows){
 						//loop through all the top left tr match all tr height with top right table and set accordingly
-						for (var i = 0; i < angular.element('.top-left').find('tr').length; i++) {
-							var tlhieght = angular.element('.top-left').find('tr:eq( ' + i + ' )').find('th:eq( 0 )').height(),
-								trhieght = angular.element('.top-right').find('tr:eq( ' + i + ' )').find('th:eq( 0 )').height();
+						for (var i = 0; i < element.find('.top-left').find('tr').length; i++) {
+							var tlhieght = element.find('.top-left').find('tr:eq( ' + i + ' )').find('th:eq( 0 )').height(),
+								trhieght = element.find('.top-right').find('tr:eq( ' + i + ' )').find('th:eq( 0 )').height();
 							if (tlhieght <= trhieght) {
-								angular.element('.top-left').find('tr:eq( ' + i + ' )').find('th:eq( 0 )').height(trhieght);
+								element.find('.top-left').find('tr:eq( ' + i + ' )').find('th:eq( 0 )').height(trhieght);
 							} else {
-								angular.element('.top-right').find('tr:eq( ' + i + ' )').find('th:eq( 0 )').height(tlhieght)
+								element.find('.top-right').find('tr:eq( ' + i + ' )').find('th:eq( 0 )').height(tlhieght)
 							}
 						}
 						
 						//loop through totalRows and match all tr height with bottom-left and bottom-right table and set accordingly
 						for(var i=0; i<= totalRows.length ;i++ ){
-							var blhieght = angular.element('#bottom-left-'+i).find('td:eq( 0 )').height(),
-								brhieght = angular.element('#bottom-right-'+i).find('td:eq( 0 )').height();
+							var blhieght = element.find('#bottom-left-'+i).find('td:eq( 0 )').height(),
+								brhieght = element.find('#bottom-right-'+i).find('td:eq( 0 )').height();
 							if(blhieght !== brhieght){
 								if (blhieght < brhieght) {
-									angular.element('#bottom-left-'+i).find('td:eq( 0 )').height(brhieght);
+									element.find('#bottom-left-'+i).find('td:eq( 0 )').height(brhieght);
 								} else {
-									angular.element('#bottom-right-'+i).find('td:eq( 0 )').height(blhieght);
+									element.find('#bottom-right-'+i).find('td:eq( 0 )').height(blhieght);
 								}
 							}
 						}
@@ -119,26 +119,26 @@
 						}
 					
 						//loop through the top-left column and compare with bottom-left to synch width
-						for (var i = 0; i < angular.element('.top-left').find('tr:eq( 0 )').find('th').length; i++) {
-							var bwidth = angular.element('.bottom-left').find('tr:eq( 0 )').find('td:eq(' + i + ')').width(),
-								twidth = angular.element('.top-left').find('tr:eq( 0 )').find('th:eq(' + i + ')').width();
+						for (var i = 0; i < element.find('.top-left').find('tr:eq( 0 )').find('th').length; i++) {
+							var bwidth = element.find('.bottom-left').find('tr:eq( 0 )').find('td:eq(' + i + ')').width(),
+								twidth = element.find('.top-left').find('tr:eq( 0 )').find('th:eq(' + i + ')').width();
 							if(bwidth !== twidth){
 								if (bwidth < twidth) {
-									angular.element('.bottom-left').find('tr:eq( 0 )').find('td:eq(' + i + ')').width(twidth);
+									element.find('.bottom-left').find('tr:eq( 0 )').find('td:eq(' + i + ')').width(twidth);
 								} else {
-									angular.element('.top-left').find('tr:eq( 0 )').find('th:eq(' + i + ')').width(bwidth);
+									element.find('.top-left').find('tr:eq( 0 )').find('th:eq(' + i + ')').width(bwidth);
 								}
 							}
 						};
 						//loop through the top-right column and compare with bottom-right to synch width
-						for (var i = 0; i < angular.element('.top-right').find('tr:eq( 0 )').find('th').length; i++) {
-							var bwidth = angular.element('.bottom-right').find('tr:eq( 0 )').find('td:eq(' + i + ')').width(),
-								twidth = angular.element('.top-right').find('tr:eq( 0 )').find('th:eq(' + i + ')').width();
+						for (var i = 0; i < element.find('.top-right').find('tr:eq( 0 )').find('th').length; i++) {
+							var bwidth = element.find('.bottom-right').find('tr:eq( 0 )').find('td:eq(' + i + ')').width(),
+								twidth = element.find('.top-right').find('tr:eq( 0 )').find('th:eq(' + i + ')').width();
 							if(bwidth !== twidth) {
 								if (bwidth < twidth) {
-									angular.element('.bottom-right').find('tr:eq( 0 )').find('td:eq(' + i + ')').width(twidth);
+									element.find('.bottom-right').find('tr:eq( 0 )').find('td:eq(' + i + ')').width(twidth);
 								} else {
-									angular.element('.top-right').find('tr:eq( 0 )').find('th:eq(' + i + ')').width(bwidth);
+									element.find('.top-right').find('tr:eq( 0 )').find('th:eq(' + i + ')').width(bwidth);
 								}
 							}
 						};
@@ -153,9 +153,9 @@
 									syncTableRowsHeight(scope.dataCollection);
 									syncTableColumnsWidth();
 									
-									angular.element('.bottom-right').scroll(function() {
-										angular.element('.top-right').scrollLeft(angular.element('.bottom-right').scrollLeft());
-										angular.element('.bottom-left').scrollTop(angular.element('.bottom-right').scrollTop());
+									element.find('.bottom-right').scroll(function() {
+										element.find('.top-right').scrollLeft(element.find('.bottom-right').scrollLeft());
+										element.find('.bottom-left').scrollTop(element.find('.bottom-right').scrollTop());
 									});
 								}
 							});
