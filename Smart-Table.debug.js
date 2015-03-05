@@ -167,7 +167,8 @@
 							element.find('#right_Header').width(bodytblWidth);
 						}
 						//if table has scrollbar additional padding will be added
-						if(element.find('.bottom-right').get(0).scrollHeight > element.find('.bottom-right').height()) {
+						if(element.find('.bottom-right').get(0).scrollHeight > element.find('.bottom-right').height() && 
+								element.find('.bottom-right').get(0).scrollWidth > element.find('.bottom-right').width()) {
 							element.find('.bottom-right').css({'padding-right': '18px'});
 						}
 					
