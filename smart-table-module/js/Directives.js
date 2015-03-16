@@ -114,9 +114,13 @@
 							element.find('#right_Header').width(bodytblWidth);
 						}
 						//if table has scrollbar additional padding will be added
-						if(element.find('.bottom-right').get(0).scrollHeight > element.find('.bottom-right').height() && 
-								element.find('.bottom-right').get(0).scrollWidth > element.find('.bottom-right').width()) {
-							element.find('.bottom-right').css({'padding-right': '18px'});
+						element.find('.bottom-right').css({'padding-right' : '0'});
+						element.find('.bottom-left').css({'padding-bottom' : '0'});
+						if (element.find('.bottom-right').get(0).scrollHeight > element.find('.bottom-right').height() &&
+							element.find('.bottom-right').get(0).scrollWidth > element.find('.bottom-right').width()) {
+							element.find('.bottom-right').css({'padding-right' : '18px'});
+						} else if (element.find('.bottom-right').get(0).scrollHeight > element.find('.bottom-right').height()) {
+							element.find('.bottom-left').css({'padding-bottom' : '22px'});
 						}
 					
 						//loop through the top-left column and compare with bottom-left to synch width
