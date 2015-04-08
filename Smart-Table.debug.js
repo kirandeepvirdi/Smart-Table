@@ -173,7 +173,7 @@
 							element.find('.bottom-right').get(0).scrollWidth > element.find('.bottom-right').get(0).clientWidth) {
 							element.find('.bottom-right').css({'padding-right' : '18px'});
 						} else if (element.find('.bottom-right').get(0).scrollHeight > element.find('.bottom-right').get(0).clientHeight) {
-							element.find('.bottom-left').css({'padding-bottom' : '22px'});
+							element.find('.bottom-left').css({'padding-bottom' : '18px'});
 						}
 					
 						//loop through the top-left column and compare with bottom-left to synch width
