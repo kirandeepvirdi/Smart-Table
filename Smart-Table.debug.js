@@ -169,10 +169,10 @@
 						//if table has scrollbar additional padding will be added
 						element.find('.bottom-right').css({'padding-right' : '0'});
 						element.find('.bottom-left').css({'padding-bottom' : '0'});
-						if ((element.find('.bottom-right').get(0).scrollHeight + 18) > element.find('.bottom-right').height() &&
-							(element.find('.bottom-right').get(0).scrollWidth + 18) > element.find('.bottom-right').width()) {
+						if (element.find('.bottom-right').get(0).scrollHeight > element.find('.bottom-right').get(0).clientHeight &&
+							element.find('.bottom-right').get(0).scrollWidth > element.find('.bottom-right').get(0).clientWidth) {
 							element.find('.bottom-right').css({'padding-right' : '18px'});
-						} else if (element.find('.bottom-right').get(0).scrollHeight > element.find('.bottom-right').height()) {
+						} else if (element.find('.bottom-right').get(0).scrollHeight > element.find('.bottom-right').get(0).clientHeight) {
 							element.find('.bottom-left').css({'padding-bottom' : '22px'});
 						}
 					
