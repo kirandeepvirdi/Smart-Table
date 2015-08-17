@@ -115,12 +115,22 @@
 						}
 						//if table has scrollbar additional padding will be added
 						element.find('.bottom-right').css({'padding-right' : '0'});
-						element.find('.bottom-left').css({'padding-bottom' : '0'});
+
+						if (navigator.userAgent.indexOf('Mac') > 0) {
+							element.find('.bottom-left').css({'padding-bottom' : '3px'});
+						} else {
+							element.find('.bottom-left').css({'padding-bottom' : '1px'});
+						}
+						
+						var heightOfBottomRightTable = element.find('.bottom-right').css('max-height');
+						element.find('.bottom-left').css({'max-height' : heightOfBottomRightTable });
+						
+						heightOfBottomRightTable = (parseInt((element.find('.preview-modal').find('.bottom-right').css('max-height')),10) - 18) + 'px';
+						angular.element('.rc-export-modal').find('.bottom-left').css({'padding-bottom' : '18px'});
+						
 						if (element.find('.bottom-right').get(0).scrollHeight > element.find('.bottom-right').get(0).clientHeight &&
 							element.find('.bottom-right').get(0).scrollWidth > element.find('.bottom-right').get(0).clientWidth) {
 							element.find('.bottom-right').css({'padding-right' : '18px'});
-						} else if (element.find('.bottom-right').get(0).scrollHeight > element.find('.bottom-right').get(0).clientHeight) {
-							element.find('.bottom-left').css({'padding-bottom' : '18px'});
 						}
 					
 						//loop through the top-left column and compare with bottom-left to synch width
@@ -147,6 +157,20 @@
 								}
 							}
 						};
+						if (element.find('.bottom-right').get(0).scrollWidth > element.find('.bottom-right').get(0).clientWidth) {
+							var heightOfTableWithHScroll = parseInt(element.find('.bottom-right').css('max-height'), 10);
+							// Additional check for preview table - as it has important attached in its css
+							if (heightOfTableWithHScroll === 498) {
+								if(navigator.userAgent.indexOf('Mac') > 0) {
+									angular.element('.rc-export-modal').find('.bottom-left').css({'padding-bottom' : '3px'});
+								} else {
+									angular.element('.rc-export-modal').find('.bottom-left').css({'padding-bottom' : '1px'});
+								}
+
+							} else {
+								element.find('.bottom-left').css({'max-height' : (heightOfTableWithHScroll - 18)+'px'});
+							}
+						}
 					};
 					
 					//this is common function which call both height and width of rows and apply scroll to table
